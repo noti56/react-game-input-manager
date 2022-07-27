@@ -1,7 +1,6 @@
 {
   "name": "react-game-input-manager",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -10,11 +9,8 @@
     "@types/node": "^16.11.45",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-gamepad": "SBRK/react-gamepad",
     "react-joystick-component": "^4.0.1",
-    "react-scripts": "5.0.1",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
@@ -43,6 +39,16 @@
     ]
   },
   "devDependencies": {
-    "@types/react-gamepad": "^1.0.3"
+    "@types/react-gamepad": "^1.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [ "dist", "README.md" ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noti56/react-game-input-manager"
   }
 }
