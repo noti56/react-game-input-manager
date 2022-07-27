@@ -12,6 +12,8 @@
     "@types/react-dom": "^18.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-gamepad": "SBRK/react-gamepad",
+    "react-joystick-component": "^4.0.1",
     "react-scripts": "5.0.1",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
@@ -39,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-gamepad": "^1.0.3"
   }
 }
