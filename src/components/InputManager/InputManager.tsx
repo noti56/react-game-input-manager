@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { JoystickShape } from "react-joystick-component";
-import getPlatform  from "../../services/platform";
+import getPlatform from "../../services/platform";
 import Gamepad, { Axis, Button } from "react-gamepad";
 import "./InputManager.css";
 import VirtualJoystick from "../VirtualJoystic/VirtualJoystick";
-import  {getAxisCalc,
+import {
+  getAxisCalc,
   calcCursorPoints,
   TAxisSimpleType,
   TInputs,
@@ -102,6 +103,7 @@ const InputManager = ({
     if (currentInput == "virtualJoystic") {
       removeKeyboardEventListeners();
     } else {
+      removeKeyboardEventListeners();
       mouseClickRightHandler = controls.find((defKey) => defKey.isMouseClickMenu)?.onPress;
       mouseClickLeftHandler = controls.find((defKey) => defKey.isMouseClickLeft)?.onPress;
       onMouseMoveHandler = controls.find((defKey) => defKey.axisMouseOrGamePad)?.onPress;
@@ -280,7 +282,6 @@ const InputManager = ({
     </>
   );
 };
-
 
 export const VirtualJoystickButton = ({ button, className, textColor }: IVirtualJoystickbutton) => {
   if (!button) return <span></span>;

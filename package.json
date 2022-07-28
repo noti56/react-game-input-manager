@@ -1,6 +1,6 @@
 {
   "name": "react-input-manager",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A Library That Handles Game Diffrent inputs! Works with : Keyboard mouse, Xbox one & Xbox series X Contollers On the Pc and also on Mobile, And with Razer Kishi! Also , If your playing on mobile it will render a Virtual joystick with a button preset of an xbox controller. This Library Also contains a vibrate utill that works with android and gamepad that connected to a pc.",
   "dependencies": {
     "react-gamepad": "SBRK/react-gamepad",
