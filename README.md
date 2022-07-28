@@ -23,6 +23,8 @@ Install my-project with npm
 
 - Vr Controllers
 
+- Add Documentation & usage examples
+
 ## Tech Stack
 
 **Client:** React,TypeScript,CSS, GamepadApi
