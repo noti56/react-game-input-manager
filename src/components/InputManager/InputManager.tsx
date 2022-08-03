@@ -32,11 +32,13 @@ const InputManager = ({
   const center: any = useRef();
 
   const keyboardFunction = (e: KeyboardEvent) => {
-    console.log(e, "keyboard event");
-
     setGamepad(null);
     setCurrentInput("keyboardMouse");
-    const keyPressed = e.code.toLowerCase();
+    let keyPressed = e.key.toLowerCase();
+
+    if (e.key == " ") {
+      keyPressed = "space";
+    }
 
     const handler = controls.find((defKey) => defKey.keyboardKeyLowerCase == keyPressed);
     if (handler) {
@@ -161,7 +163,6 @@ const InputManager = ({
             const btn = gamepadClick(buttonName);
             if (pressed) {
               setGamepad(navigator.getGamepads()[0]);
-              // console.log(buttonName);
 
               setCurrentInput("gamepad");
               if (btn && btn.onPress) {
