@@ -1,2 +1,2 @@
-export * from './components';
-export * from './services';
+export { InputManager, VirtualJoystic } from "./src";
+export { getPlatform, vibrate } from "./src";

@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { Button, Axis } from 'react-gamepad';
+import { Button } from 'react-gamepad';
 import { JoystickShape } from 'react-joystick-component';
 import { IJoystickUpdateEvent } from 'react-joystick-component/build/lib/Joystick';
 
@@ -25,7 +25,7 @@ interface VirtualJoysticProps {
 }
 
 declare type TAxisSimpleType = "right" | "left";
-interface IAxisAction$1 {
+interface IAxisAction {
     x: number | null;
     y: number | null;
 }
@@ -35,8 +35,8 @@ interface IGamePadKeyboard {
     keyboardKeyLowerCase?: string;
     gamepadButton?: Button;
     axisMouseOrGamePad?: TAxisSimpleType;
-    onPress?: (event?: IAxisAction$1 | KeyboardEvent | any) => void;
-    onRelase?: (event?: IAxisAction$1) => void;
+    onPress?: (event?: IAxisAction | KeyboardEvent | any) => void;
+    onRelase?: (event?: IAxisAction) => void;
     virtualCustomJoysticButtonToShow?: React.ReactNode;
 }
 interface IPropsInputManager {
@@ -53,20 +53,9 @@ declare const InputManager: ({ keysGamepadControls: controls, showVirtualJoystic
 
 declare const VirtualJoystick: ({ joysticOptions, onMove, onStop }: VirtualJoysticProps) => JSX.Element;
 
-interface IAxisAction {
-    x: number | null;
-    y: number | null;
-}
-interface XY {
-    x: number;
-    y: number;
-}
-declare const calcCursorPoints: (curCursorPosition: XY, lastCursorPosition: XY, mouseSensetivity?: number) => XY;
-declare const getAxisCalc: (gamepadValue: number | IJoystickUpdateEvent, gamepadAxis?: Axis) => IAxisAction | undefined;
-
 declare type TPlatform = "windows" | "macOS" | "unix" | "linux" | "iphone" | "android";
 declare const getPlatform: () => TPlatform | undefined;
 
 declare const vibrate: (vibration: number[]) => void;
 
-export { InputManager, VirtualJoystick as VirtualJoystic, calcCursorPoints, getAxisCalc, getPlatform, vibrate };
+export { InputManager, VirtualJoystick as VirtualJoystic, getPlatform, vibrate };

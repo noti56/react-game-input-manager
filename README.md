@@ -19,7 +19,8 @@ Install my-project with npm
 
 ## Roadmap
 
-- Local Multiplayer Support (Gamepad + Keyboard)
+- Local Multiplayer and instancing Support (Gamepad + Keyboard && Gamepad + Gamepad)
+
 
 - Vr Controllers
 
