@@ -47,6 +47,22 @@ const InputManager = ({
       }
     }
   };
+  const keyboardRelaseFunction = (e: KeyboardEvent) => {
+    setGamepad(null);
+    setCurrentInput("keyboardMouse");
+    let keyPressed = e.key.toLowerCase();
+
+    if (e.key == " ") {
+      keyPressed = "space";
+    }
+
+    const handler = controls.find((defKey) => defKey.keyboardKeyLowerCase == keyPressed);
+    if (handler) {
+      if (handler.onRelase) {
+        handler.onRelase(e);
+      }
+    }
+  };
   const onLeftMouseClick = (e: MouseEvent) => {
     setGamepad(null);
     setCurrentInput("keyboardMouse");
@@ -89,10 +105,12 @@ const InputManager = ({
   };
 
   const removeKeyboardEventListeners = () => {
-    document.removeEventListener("keypress", keyboardFunction);
+    document.removeEventListener("keydown", keyboardFunction);
+    document.removeEventListener("keyup", keyboardRelaseFunction);
     document.removeEventListener("click", onLeftMouseClick);
     document.removeEventListener("contextmenu", onRightMouseClick);
     document.removeEventListener("mousemove", onMouseMove);
+
   };
 
   useEffect(() => {
@@ -115,10 +133,12 @@ const InputManager = ({
       if (mouseClickLeftHandler) {
         document.addEventListener("click", onLeftMouseClick);
       }
-      document.addEventListener("keypress", keyboardFunction);
       if (onMouseMoveHandler) {
         document.addEventListener("mousemove", onMouseMove);
       }
+
+      document.addEventListener("keydown", keyboardFunction);
+      document.addEventListener("keyup", keyboardRelaseFunction);
     }
 
     return () => {
