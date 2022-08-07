@@ -36,7 +36,7 @@ interface IGamePadKeyboard {
     gamepadButton?: Button;
     axisMouseOrGamePad?: TAxisSimpleType;
     onPress?: (event?: IAxisAction | KeyboardEvent | any) => void;
-    onRelase?: (event?: IAxisAction) => void;
+    onRelase?: (event?: IAxisAction | KeyboardEvent) => void;
     virtualCustomJoysticButtonToShow?: React.ReactNode;
 }
 interface IPropsInputManager {
