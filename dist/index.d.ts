@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import React$1 from 'react';
 import { Button } from 'react-gamepad';
 import { JoystickShape } from 'react-joystick-component';
 import { IJoystickUpdateEvent } from 'react-joystick-component/build/lib/Joystick';
@@ -49,7 +50,7 @@ interface IPropsInputManager {
     children?: React.ReactNode;
 }
 
-declare const InputManager: ({ keysGamepadControls: controls, showVirtualJoysticOnNoGamepadMobile, children, virtualJoysticOptionsLeft, virtualJoysticOptionsRight, mouseSensetivity, hideMouseCursor, }: IPropsInputManager) => JSX.Element;
+declare const InputManager: ({ keysGamepadControls: controls, showVirtualJoysticOnNoGamepadMobile, children, virtualJoysticOptionsLeft, virtualJoysticOptionsRight, mouseSensetivity, hideMouseCursor, }: IPropsInputManager) => React$1.ReactPortal | null;
 
 declare const VirtualJoystick: ({ joysticOptions, onMove, onStop }: VirtualJoysticProps) => JSX.Element;
 

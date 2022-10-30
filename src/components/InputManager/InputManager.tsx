@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { JoystickShape } from "react-joystick-component";
 import getPlatform from "../../services/platform";
 import Gamepad, { Axis, Button } from "react-gamepad";
+import { v4 } from "uuid";
 import "./InputManager.css";
 import VirtualJoystick from "../VirtualJoystic/VirtualJoystick";
 import {
@@ -27,9 +29,23 @@ const InputManager = ({
   let onMouseMoveHandler: Function | undefined;
 
   const [gamepad, setGamepad] = useState<any>();
+
+  const [portalNodeRef, setPortalNodeRef] = useState<Element | null>(null);
+
   let lastCursorPosVar: { x: number; y: number } = { x: 0, y: 0 };
 
   const center: any = useRef();
+  useEffect(() => {
+    const id = v4();
+    const div = document.createElement("div");
+    div.id = id;
+    div.setAttribute("style", "height: 100vh; width: 100vw; ");
+    document.body.appendChild(div);
+    setPortalNodeRef(document.getElementById(id));
+    return () => {
+      document.body.removeChild(div);
+    };
+  }, []);
 
   const keyboardFunction = (e: KeyboardEvent) => {
     setGamepad(null);
@@ -110,7 +126,6 @@ const InputManager = ({
     document.removeEventListener("click", onLeftMouseClick);
     document.removeEventListener("contextmenu", onRightMouseClick);
     document.removeEventListener("mousemove", onMouseMove);
-
   };
 
   useEffect(() => {
@@ -155,152 +170,157 @@ const InputManager = ({
   };
 
   return (
-    <>
-      <div ref={center} className="cursor" style={{ cursor: hideMouseCursor ? "none" : "" }}>
-        <Gamepad
-          onConnect={(gamepadIndex) => {
-            setCurrentInput("gamepad");
-            const gamepadsArray = navigator.getGamepads();
-            if (gamepadsArray[gamepadIndex]) {
-              setGamepad(gamepadsArray[gamepadIndex]);
-            }
-          }}
-          onAxisChange={(axisName, value, previousValue) => {
-            if (axisName.toLocaleLowerCase().includes("right")) {
-              const action = checkForEventButton("right");
-              if (action && action.onPress) {
-                action.onPress(getAxisCalc(value, axisName));
-              }
-            }
-            if (axisName.toLocaleLowerCase().includes("left")) {
-              const action = checkForEventButton("left");
-              if (action && action.onPress) {
-                action.onPress(getAxisCalc(value, axisName));
-              }
-            }
-          }}
-          onButtonChange={(buttonName: Button, pressed: boolean) => {
-            const btn = gamepadClick(buttonName);
-            if (pressed) {
-              setGamepad(navigator.getGamepads()[0]);
-
+    portalNodeRef &&
+    createPortal(
+      <>
+        <div ref={center} className="cursor" style={{ cursor: hideMouseCursor ? "none" : "" }}>
+          <Gamepad
+            onConnect={(gamepadIndex) => {
               setCurrentInput("gamepad");
-              if (btn && btn.onPress) {
-                btn.onPress();
+              const gamepadsArray = navigator.getGamepads();
+              if (gamepadsArray[gamepadIndex]) {
+                setGamepad(gamepadsArray[gamepadIndex]);
               }
-            } else {
-              if (btn && btn.onRelase) {
-                btn.onRelase();
+            }}
+            onAxisChange={(axisName, value, previousValue) => {
+              if (axisName.toLocaleLowerCase().includes("right")) {
+                const action = checkForEventButton("right");
+                if (action && action.onPress) {
+                  action.onPress(getAxisCalc(value, axisName));
+                }
               }
-            }
-          }}
-        >
-          <span style={{ display: "none" }}></span>
-        </Gamepad>
+              if (axisName.toLocaleLowerCase().includes("left")) {
+                const action = checkForEventButton("left");
+                if (action && action.onPress) {
+                  action.onPress(getAxisCalc(value, axisName));
+                }
+              }
+            }}
+            onButtonChange={(buttonName: Button, pressed: boolean) => {
+              const btn = gamepadClick(buttonName);
+              if (pressed) {
+                setGamepad(navigator.getGamepads()[0]);
 
-        {toShowVirtualJoystic() && (
-          <div className="virtual-joystic">
-            <div className="joystics-wrapper">
-              <span
-                className="joystic-container"
-                style={{ position: "absolute", left: "40px", bottom: 0 }}
-              >
-                {/* left movement */}
-                {checkForEventButton("left") && (
-                  <VirtualJoystick
-                    joysticOptions={virtualJoysticOptionsRight}
-                    onMove={(e) => {
-                      const action = checkForEventButton("left");
-                      if (action && action.onPress) {
-                        action.onPress(getAxisCalc(e));
-                        // action.onPress(e);
-                      }
-                    }}
-                    onStop={(e) => {
-                      const action = checkForEventButton("left");
-                      if (action && action.onRelase) {
-                        action.onRelase(e);
-                      }
-                    }}
+                setCurrentInput("gamepad");
+                if (btn && btn.onPress) {
+                  btn.onPress();
+                }
+              } else {
+                if (btn && btn.onRelase) {
+                  btn.onRelase();
+                }
+              }
+            }}
+          >
+            {/* <span style={{ display: "none" }}></span> */}
+            <></>
+          </Gamepad>
+
+          {toShowVirtualJoystic() && (
+            <div className="virtual-joystic">
+              <div className="joystics-wrapper">
+                <span
+                  className="joystic-container"
+                  style={{ position: "absolute", left: "40px", bottom: 0 }}
+                >
+                  {/* left movement */}
+                  {checkForEventButton("left") && (
+                    <VirtualJoystick
+                      joysticOptions={virtualJoysticOptionsRight}
+                      onMove={(e) => {
+                        const action = checkForEventButton("left");
+                        if (action && action.onPress) {
+                          action.onPress(getAxisCalc(e));
+                          // action.onPress(e);
+                        }
+                      }}
+                      onStop={(e) => {
+                        const action = checkForEventButton("left");
+                        if (action && action.onRelase) {
+                          action.onRelase(e);
+                        }
+                      }}
+                    />
+                  )}
+                </span>
+                <div className="VirtualJoystickButton-wrapper">
+                  <VirtualJoystickButton
+                    button={checkForEventButton("A")}
+                    className="virtual-button"
+                    textColor="green"
                   />
-                )}
-              </span>
-              <div className="VirtualJoystickButton-wrapper">
-                <VirtualJoystickButton
-                  button={checkForEventButton("A")}
-                  className="virtual-button"
-                  textColor="green"
-                />
-                <VirtualJoystickButton
-                  button={checkForEventButton("Y")}
-                  className="virtual-button"
-                  textColor="yellow"
-                />
-                <VirtualJoystickButton
-                  button={checkForEventButton("X")}
-                  className="virtual-button"
-                  textColor="blue"
-                />
-                <VirtualJoystickButton
-                  button={checkForEventButton("B")}
-                  className="virtual-button"
-                  textColor="red"
-                />
+                  <VirtualJoystickButton
+                    button={checkForEventButton("Y")}
+                    className="virtual-button"
+                    textColor="yellow"
+                  />
+                  <VirtualJoystickButton
+                    button={checkForEventButton("X")}
+                    className="virtual-button"
+                    textColor="blue"
+                  />
+                  <VirtualJoystickButton
+                    button={checkForEventButton("B")}
+                    className="virtual-button"
+                    textColor="red"
+                  />
+                </div>
+                <span
+                  className="joystic-container"
+                  style={{ position: "absolute", right: "40px", bottom: 0 }}
+                >
+                  {/* right aim */}
+                  {checkForEventButton("right") && (
+                    <VirtualJoystick
+                      joysticOptions={virtualJoysticOptionsLeft}
+                      onMove={(e) => {
+                        const action = checkForEventButton("right");
+                        if (action && action.onPress) {
+                          action.onPress(getAxisCalc(e));
+                        }
+                      }}
+                      onStop={(e) => {
+                        const action = checkForEventButton("right");
+                        if (action && action.onRelase) {
+                          action.onRelase(e);
+                        }
+                      }}
+                    />
+                  )}
+                </span>
               </div>
-              <span
-                className="joystic-container"
-                style={{ position: "absolute", right: "40px", bottom: 0 }}
-              >
-                {/* right aim */}
-                {checkForEventButton("right") && (
-                  <VirtualJoystick
-                    joysticOptions={virtualJoysticOptionsLeft}
-                    onMove={(e) => {
-                      const action = checkForEventButton("right");
-                      if (action && action.onPress) {
-                        action.onPress(getAxisCalc(e));
-                      }
-                    }}
-                    onStop={(e) => {
-                      const action = checkForEventButton("right");
-                      if (action && action.onRelase) {
-                        action.onRelase(e);
-                      }
-                    }}
-                  />
-                )}
-              </span>
-            </div>
 
-            <div>
-              <span className="left-shoulder shoulder">
-                {/* {checkForEventButton("LT") && <button onClick={() => gamepadClick("LT")}>LT</button>} */}
-                <VirtualJoystickButton
-                  button={checkForEventButton("LT")}
-                  className="shoulder-button"
-                />
-                <VirtualJoystickButton
-                  button={checkForEventButton("LB")}
-                  className="shoulder-button"
-                />
-                {/* {checkForEventButton("LB") && <button onClick={() => gamepadClick("LB")}>LB</button>} */}
-              </span>
-              <span className="right-shoulder shoulder">
-                <VirtualJoystickButton
-                  button={checkForEventButton("RT")}
-                  className="shoulder-button"
-                />
-                <VirtualJoystickButton
-                  button={checkForEventButton("RB")}
-                  className="shoulder-button"
-                />
-              </span>
+              <div>
+                <span className="left-shoulder shoulder">
+                  {/* {checkForEventButton("LT") && <button onClick={() => gamepadClick("LT")}>LT</button>} */}
+                  <VirtualJoystickButton
+                    button={checkForEventButton("LT")}
+                    className="shoulder-button"
+                  />
+                  <VirtualJoystickButton
+                    button={checkForEventButton("LB")}
+                    className="shoulder-button"
+                  />
+                  {/* {checkForEventButton("LB") && <button onClick={() => gamepadClick("LB")}>LB</button>} */}
+                </span>
+                <span className="right-shoulder shoulder">
+                  <VirtualJoystickButton
+                    button={checkForEventButton("RT")}
+                    className="shoulder-button"
+                  />
+                  <VirtualJoystickButton
+                    button={checkForEventButton("RB")}
+                    className="shoulder-button"
+                  />
+                </span>
+              </div>
             </div>
-          </div>
-        )}
-        {children}
-      </div>
-    </>
+          )}
+          {children}
+        </div>
+      </>,
+      portalNodeRef
+    )
   );
 };
 
