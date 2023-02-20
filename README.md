@@ -13,6 +13,11 @@ Install my-project with npm
 
 ```
 
+
+## Important Note!
+    Ive change the interface of the the inputManager keyboard key and entered a type safe one that supports all keyboard layouts.
+    
+
 ## Authors
 
 - [@noti56](https://github.com/noti56)
