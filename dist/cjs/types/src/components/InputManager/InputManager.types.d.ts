@@ -1,6 +1,7 @@
 /// <reference types="react" />
 import { Button } from "react-gamepad";
 import { IVirtualJoysticProps } from "../VirtualJoystic/VirtualJoystick.types";
+import code from "./code.type";
 export declare type TAxisSimpleType = "right" | "left";
 export interface IAxisAction {
     x: number | null;
@@ -9,7 +10,7 @@ export interface IAxisAction {
 export interface IGamePadKeyboard {
     isMouseClickMenu?: boolean;
     isMouseClickLeft?: boolean;
-    keyboardKeyLowerCase?: string;
+    keyboardCode?: code;
     gamepadButton?: Button;
     axisMouseOrGamePad?: TAxisSimpleType;
     onPress?: (event?: IAxisAction | KeyboardEvent | any) => void;

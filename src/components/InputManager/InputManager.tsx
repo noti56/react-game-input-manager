@@ -50,29 +50,20 @@ const InputManager = ({
   const keyboardFunction = (e: KeyboardEvent) => {
     setGamepad(null);
     setCurrentInput("keyboardMouse");
-    let keyPressed = e.key.toLowerCase();
 
-    if (e.key == " ") {
-      keyPressed = "space";
-    }
-
-    const handler = controls.find((defKey) => defKey.keyboardKeyLowerCase == keyPressed);
+    const handler = controls.find((defKey) => defKey.keyboardCode == e.code);
     if (handler) {
       if (handler.onPress) {
         handler.onPress(e);
       }
     }
   };
+
   const keyboardRelaseFunction = (e: KeyboardEvent) => {
     setGamepad(null);
     setCurrentInput("keyboardMouse");
-    let keyPressed = e.key.toLowerCase();
 
-    if (e.key == " ") {
-      keyPressed = "space";
-    }
-
-    const handler = controls.find((defKey) => defKey.keyboardKeyLowerCase == keyPressed);
+    const handler = controls.find((defKey) => defKey.keyboardCode == e.code);
     if (handler) {
       if (handler.onRelase) {
         handler.onRelase(e);
